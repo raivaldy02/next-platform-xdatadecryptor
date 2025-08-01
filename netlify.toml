@@ -1,3 +1,20 @@
 [build]
-  publish = ".next"
-  command = "npm run build"
+  # Publish the `public/` folder as static
+  publish = "public"
+  # Directory for all our Netlify Functions (AWS Lambda)
+  functions = "functions"
+
+# Redirect client‐side calls to our functions
+#   POST /encrypt → /.netlify/functions/encrypt
+#   POST /decrypt → /.netlify/functions/decrypt
+[[redirects]]
+  from = "/encrypt"
+  to   = "/.netlify/functions/encrypt"
+  status = 200
+  methods = ["POST"]
+
+[[redirects]]
+  from = "/decrypt"
+  to   = "/.netlify/functions/decrypt"
+  status = 200
+  methods = ["POST"]
