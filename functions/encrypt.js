@@ -12,7 +12,8 @@ function hexToBytes(hex) {
 }
 
 function b64UrlSafeEncode(str) {
-    return str.replace(/\+/g, '-').replace(/\//g, '_');
+    const b64 = global.btoa(str);
+    return b64.replace(/\+/g, '-').replace(/\//g, '_');
 }
 
 function base64ToArrayBuffer(base64) {
