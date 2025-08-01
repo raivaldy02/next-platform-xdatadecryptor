@@ -1,20 +1,20 @@
+# netlify.toml
 [build]
-  # Publish the `public/` folder as static
+  # we have no build step
+  command = ""
+  # these are the folders we want Netlify to publish
   publish = "public"
-  # Directory for all our Netlify Functions (AWS Lambda)
   functions = "functions"
 
-# Redirect client‐side calls to our functions
-#   POST /encrypt → /.netlify/functions/encrypt
-#   POST /decrypt → /.netlify/functions/decrypt
+# redirect the two friendly URLs to your functions
 [[redirects]]
-  from = "/encrypt"
-  to   = "/.netlify/functions/encrypt"
-  status = 200
+  from    = "/encrypt"
+  to      = "/.netlify/functions/encrypt"
+  status  = 200
   methods = ["POST"]
 
 [[redirects]]
-  from = "/decrypt"
-  to   = "/.netlify/functions/decrypt"
-  status = 200
+  from    = "/decrypt"
+  to      = "/.netlify/functions/decrypt"
+  status  = 200
   methods = ["POST"]
