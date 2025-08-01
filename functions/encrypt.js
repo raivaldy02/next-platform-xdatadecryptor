@@ -12,18 +12,16 @@ function hexToBytes(hex) {
 }
 
 function b64UrlSafeEncode(str) {
-    const b64 = global.btoa(str);
-    return b64.replace(/\+/g, '-').replace(/\//g, '_');
+    return str.replace(/\+/g, '-').replace(/\//g, '_');
 }
 
-function base64ToArrayBuffer(base64) {
-    let binary = global.atob(base64);
-    let len = binary.length;
-    let bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binary.charCodeAt(i);
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    let bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
     }
-    return bytes;
+    return global.btoa(binary);
 }
 
 exports.handler = async function(event) {
@@ -46,10 +44,11 @@ exports.handler = async function(event) {
     const ptBytes = hexToBytes(pt);
 
     const cipher = crypto.createCipheriv('aes-256-cbc', keyBytes, ivBytes);
-    var cipherText = cipher.update(ptBytes) + cipher.final('utf8');
+    var cipherText = Buffer.concat([cipher.update(ptBytes), cipher.final()]);
 
     // base64url encode
-    const xdata = b64UrlSafeEncode(cipherText);
+    const cipherB64 = arrayBufferToBase64(cipherText);
+    const xdata = b64UrlSafeEncode(cipherB64);
 
     return {
       statusCode: 200,
