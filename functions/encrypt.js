@@ -46,7 +46,7 @@ exports.handler = async function(event) {
     const ptBytes = hexToBytes(pt);
 
     const cipher = crypto.createCipheriv('aes-256-cbc', keyBytes, ivBytes);
-    var cipherText = cipher.update(ptBytes, 'binary', 'utf8') + cipher.final('utf8');
+    var cipherText = cipher.update(ptBytes) + cipher.final('utf8');
 
     // base64url encode
     const xdata = b64UrlSafeEncode(cipherText);
